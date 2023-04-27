@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
+    ApiHandler apiHandler;
+
     String url;
 
     Button loadButton;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        apiHandler = new ApiHandler(this);
         setContentView(binding.getRoot());
         replaceFragment(new SearchFragment());
 
