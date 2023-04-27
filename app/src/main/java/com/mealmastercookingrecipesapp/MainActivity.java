@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         apiHandler = new ApiHandler(this);
         setContentView(binding.getRoot());
-        replaceFragment(new SearchFragment());
+        replaceFragment(new SearchFragment(apiHandler));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new MenuFragment());
                     break;
                 case R.id.search:
-                    replaceFragment(new SearchFragment());
+                    replaceFragment(new SearchFragment(apiHandler));
                     break;
                 case R.id.favorite:
                     replaceFragment(new FavoriteFragment());
