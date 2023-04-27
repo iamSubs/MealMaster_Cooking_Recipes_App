@@ -18,9 +18,9 @@ public class ApiHandler {
     private Context context;
     String result;
 
-    public ApiHandler(Context context) {
+    public ApiHandler(Context context, String url, String key) {
         this.context = context;
-        this.url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=77e59043d435499d85a39c0915fdd41f";
+        this.url = url + key;
         requestQueue = Volley.newRequestQueue(context);
     }
 
@@ -29,7 +29,7 @@ public class ApiHandler {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    result = response.getString("results");
+                    result = response.getString(name);
                 }catch (Exception e){
                     result = "";
                 }

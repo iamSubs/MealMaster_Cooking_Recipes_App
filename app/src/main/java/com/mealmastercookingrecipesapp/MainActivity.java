@@ -23,63 +23,35 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-
     ApiHandler apiHandler;
-
-    String url;
-
-    Button loadButton;
-
+    String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
+    String apiKey = "2a23994b963346b292d20fbc9dd02e5d";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        apiHandler = new ApiHandler(this);
+        apiHandler = new ApiHandler(this, url, apiKey);
         setContentView(binding.getRoot());
-        replaceFragment(new SearchFragment(apiHandler));
+        replaceFragment(new HomeFragment(apiHandler));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-
             switch(item.getItemId()){
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment(apiHandler));
                     break;
                 case R.id.menu:
-                    replaceFragment(new MenuFragment());
+                    replaceFragment(new MenuFragment(apiHandler));
                     break;
                 case R.id.search:
                     replaceFragment(new SearchFragment(apiHandler));
                     break;
                 case R.id.favorite:
-                    replaceFragment(new FavoriteFragment());
+                    replaceFragment(new FavoriteFragment(apiHandler));
                     break;
             }
 
             return true;
         });
-
-
-        url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=77e59043d435499d85a39c0915fdd41f&query=chicken";
-        loadButton = (Button) findViewById(R.id.loadButton);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String text = response.getString("results");
-
-                }catch (Exception e){
-
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.newRequestQueue(this).add(request);
-
     }
 
     private void replaceFragment(Fragment fragment){

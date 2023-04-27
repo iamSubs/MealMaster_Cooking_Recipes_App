@@ -27,23 +27,18 @@ public class SearchFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        loadButton = (Button) view.findViewById(R.id.loadButton);
-        textView = (TextView) view.findViewById(R.id.textView);
-
+        loadButton = view.findViewById(R.id.loadButton);
+        textView = view.findViewById(R.id.textView);
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = apiHandler.getRecipeByName("result");
+                String text = apiHandler.getRecipeByName("results");
                 textView.setText(text);
             }
         });
-
         return view;
     }
 }

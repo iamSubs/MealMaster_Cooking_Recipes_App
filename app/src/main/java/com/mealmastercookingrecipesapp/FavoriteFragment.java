@@ -9,18 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class FavoriteFragment extends Fragment {
-
-
-
-    public FavoriteFragment() {
-        // Required empty public constructor
+    ApiHandler apiHandler;
+    public FavoriteFragment(ApiHandler apiHandler) {
+        this.apiHandler = apiHandler;
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
