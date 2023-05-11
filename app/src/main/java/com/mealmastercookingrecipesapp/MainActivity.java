@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
-    String apiKey = "8901d0f1e4ac4e18b88b126d663d62bd";
-
+    String apiKey = "2a23994b963346b292d20fbc9dd02e5d";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
