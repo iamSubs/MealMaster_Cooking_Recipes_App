@@ -29,7 +29,7 @@ public class ApiHandler {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    result = response.getString(name);
+                    result = response.toString();
                 }catch (Exception e){
                     result = "";
                 }
