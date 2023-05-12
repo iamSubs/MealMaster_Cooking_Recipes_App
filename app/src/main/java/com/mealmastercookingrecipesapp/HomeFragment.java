@@ -1,10 +1,12 @@
 package com.mealmastercookingrecipesapp;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class HomeFragment extends Fragment {
 
@@ -30,24 +34,46 @@ public class HomeFragment extends Fragment {
     }
 
     public void addImageToFragment(String title, String imageUrl) {
-        // Erstelle ein neues ImageView-Element
-        ImageView imageView = new ImageView(getContext());
-
-        // Lade das Bild von der URL und setze es in das ImageView mit Picasso
-        Picasso.get().load(imageUrl).into(imageView);
-
         // Erstelle einen TextView für den Titel des Bildes
         TextView textView = new TextView(getContext());
         textView.setText(title);
-
+        textView.setTypeface(null, Typeface.BOLD); // Fett anzeigen
+        textView.setTextSize(16); // Textgröße auf 12 setzen
+        textView.setTextColor(getResources().getColor(R.color.black));
+        // Erstelle ein neues ImageView-Element
+        ImageView imageView = new ImageView(getContext());
+        // Definiere die gewünschte Zielgröße für das Bild
+        int targetWidth = getResources().getDisplayMetrics().widthPixels; // Breite des Bildschirms
+        int targetHeight = (int) (targetWidth * 2); // Verhältnis der Höhe zur Breite (hier: 0.75)
+        // Lade das Bild von der URL und setze es in das ImageView mit Picasso
+        Picasso.get()
+                .load(imageUrl)
+                .resize(targetWidth, targetHeight)
+                .centerInside()
+                .transform(new RoundedCornersTransformation(120, 0))
+                .into(imageView);
+        // Konfiguriere die Layout-Parameter für das ImageView im LinearLayout
+        LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        int margin = getResources().getDimensionPixelSize(R.dimen.image_margin);
+        imageLayoutParams.setMargins(margin, margin/4, margin, margin/4);
+        // Setze die Skalierungsart des Bildes auf "fitXY", um es an die ImageView-Größe anzupassen
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         // Erstelle ein LinearLayout, um das ImageView und den TextView zu gruppieren
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-
+        // Konfiguriere die Layout-Parameter für den TextView
+        LinearLayout.LayoutParams textLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        textLayoutParams.setMargins(margin,0,0,0);
+        textView.setLayoutParams(textLayoutParams);
         // Füge das ImageView und den TextView zum LinearLayout hinzu
-        linearLayout.addView(imageView);
         linearLayout.addView(textView);
-
+        linearLayout.addView(imageView, imageLayoutParams);
         // Füge das LinearLayout mit dem Bild und Titel zum Layout des Fragments hinzu
         LinearLayout fragmentLayout = getView().findViewById(R.id.fragment_layout);
         fragmentLayout.addView(linearLayout);
@@ -57,33 +83,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
-        // Erstelle einen Handler, um die Prüfung zu wiederholen
+
         Handler handler = new Handler();
-
-// Definiere eine Variable, um den Zustand zu verfolgen
         final boolean[] isConditionMet = {false};
-
-// Definiere ein Runnable, das die Überprüfung durchführt
         Runnable checkRunnable = new Runnable() {
             @Override
             public void run() {
                 if (!isConditionMet[0]) {
                     // Die Bedingung ist erfüllt und wird nur einmal ausgeführt
-                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
-                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
-                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
+                    String url = apiHandler.getRecipeByName("test");
+                    addImageToFragment("Chicken", url);
+                    addImageToFragment("Chicken", imageUrl);
+                    addImageToFragment("Chicken", apiHandler.getRecipeByName("test"));
                     isConditionMet[0] = true;
                 }
-
-                // Prüfe weiterhin, bis die Bedingung erfüllt ist
                 if (!isConditionMet[0]) {
-                    // Wenn der Wert leer ist, führe die Überprüfung erneut nach einer Verzögerung aus
-                    handler.postDelayed(this, 5000); // Hier kannst du die Verzögerungszeit in Millisekunden anpassen
+                    handler.postDelayed(this, 5000);
                 }
             }
         };
-
-        // Starte die Überprüfung
         handler.post(checkRunnable);
         return view;
     }
