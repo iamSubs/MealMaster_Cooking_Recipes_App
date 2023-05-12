@@ -25,8 +25,14 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
+<<<<<<<<< Temporary merge branch 1
+    String apiKey = "2a23994b963346b292d20fbc9dd02e5d";
+
+    String test = "GITHUB TEST";
+=========
     String apiKey = "8901d0f1e4ac4e18b88b126d663d62bd";
 
+>>>>>>>>> Temporary merge branch 2
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
