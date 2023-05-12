@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
         // Erstelle ein neues ImageView-Element
         ImageView imageView = new ImageView(getContext());
 
-        // Lade das Bild von der URL und setze es in das ImageView mit Picasso oder einer anderen Bibliothek
+        // Lade das Bild von der URL und setze es in das ImageView mit Picasso
         Picasso.get().load(imageUrl).into(imageView);
 
         // Erstelle einen TextView für den Titel des Bildes
@@ -56,10 +56,35 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        spinner.setVisibility(View.GONE);
-        addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
-        addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
-        addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
+        String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
+        // Erstelle einen Handler, um die Prüfung zu wiederholen
+        Handler handler = new Handler();
+
+// Definiere eine Variable, um den Zustand zu verfolgen
+        final boolean[] isConditionMet = {false};
+
+// Definiere ein Runnable, das die Überprüfung durchführt
+        Runnable checkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!isConditionMet[0]) {
+                    // Die Bedingung ist erfüllt und wird nur einmal ausgeführt
+                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
+                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
+                    addImageToFragment("Chicken", "https://spoonacular.com/recipeImages/715497-312x231.jpg");
+                    isConditionMet[0] = true;
+                }
+
+                // Prüfe weiterhin, bis die Bedingung erfüllt ist
+                if (!isConditionMet[0]) {
+                    // Wenn der Wert leer ist, führe die Überprüfung erneut nach einer Verzögerung aus
+                    handler.postDelayed(this, 5000); // Hier kannst du die Verzögerungszeit in Millisekunden anpassen
+                }
+            }
+        };
+
+        // Starte die Überprüfung
+        handler.post(checkRunnable);
         return view;
     }
 }
