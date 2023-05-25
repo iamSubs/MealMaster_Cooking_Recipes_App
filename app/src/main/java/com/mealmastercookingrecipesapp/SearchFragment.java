@@ -35,8 +35,19 @@ public class SearchFragment extends Fragment {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = apiHandler.getRecipeByName("results");
-                textView.setText(text);
+                apiHandler.getRecipeByName("Name des Rezepts", new RecipeCallback() {
+                    @Override
+                    public void onSuccess(Recipe recipe) {
+                        textView.setText(recipe.getImageUrl());
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        // Hier kannst du Fehlerbehandlung durchführen,
+                        // falls ein Fehler bei der API-Anfrage auftritt.
+                    }
+                });
+
             }
         });
         return view;
