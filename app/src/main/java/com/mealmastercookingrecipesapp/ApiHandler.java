@@ -27,11 +27,12 @@ public class ApiHandler {
         requestQueue = Volley.newRequestQueue(context);
     }
 
-    public String getRecipeByName(String name){
+    public void getRecipeByName(String name, final RecipeCallback callback){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    Recipe recipe = null;
                     result = response.toString();
                     try {
                         ObjectMapper objectMapper = new ObjectMapper();
@@ -43,27 +44,35 @@ public class ApiHandler {
                             for (JsonNode recipeNode : recipesNode) {
                                 String title = recipeNode.get("title").asText();
                                 String id = recipeNode.get("id").asText();
-                                String image = recipeNode.get("image").asText();
-                                testText = image;
+                                String imagelink = recipeNode.get("image").asText();
+                                String instructions = recipeNode.get("instructions").asText();
+                                String readyInMinutes = recipeNode.get("readyInMinutes").asText();
+                                recipe = new Recipe(id, title, imagelink, instructions, Integer.parseInt(readyInMinutes));
                             }
                         } else {
                             System.out.println("Das JSON-Objekt enthält keine 'recipes'-Eigenschaft oder diese ist kein Array.");
                         }
+                        // Rückruf aufrufen und das Ergebnis übergeben
+                        callback.onSuccess(recipe);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        // Bei einem Fehler den Rückruf mit null aufrufen
+                        callback.onError(e);
                     }
                 }catch (Exception e){
                     result = "";
+                    // Bei einem Fehler den Rückruf mit null aufrufen
+                    callback.onError(e);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                // Bei einem Fehler den Rückruf mit null aufrufen
+                callback.onError(error);
             }
         });
         requestQueue.add(request);
-        return testText;
     }
 
 }
