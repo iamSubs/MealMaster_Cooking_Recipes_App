@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
         this.apiHandler = apiHandler;
     }
 
-    public void addImageToFragment(String title, String imageUrl) {
+    public void addImageToFragment(String title, String imageUrl, View view) {
         // Erstelle einen TextView für den Titel des Bildes
         TextView textView = new TextView(getContext());
         textView.setText(title);
@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
         linearLayout.addView(textView);
         linearLayout.addView(imageView, imageLayoutParams);
         // Füge das LinearLayout mit dem Bild und Titel zum Layout des Fragments hinzu
-        LinearLayout fragmentLayout = getView().findViewById(R.id.fragment_layout);
+        LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout);
         fragmentLayout.addView(linearLayout);
     }
 
@@ -83,6 +83,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
+        String url = apiHandler.getRecipeByName("");
+        String url1 = apiHandler.getRecipeByName("");
+        String url2 = apiHandler.getRecipeByName("");
+        addImageToFragment("Chicken", url, view);
+        addImageToFragment("Chicken", imageUrl, view);
+
 
         Handler handler = new Handler();
         final boolean[] isConditionMet = {false};
@@ -91,10 +97,11 @@ public class HomeFragment extends Fragment {
             public void run() {
                 if (!isConditionMet[0]) {
                     // Die Bedingung ist erfüllt und wird nur einmal ausgeführt
-                    String url = apiHandler.getRecipeByName("test");
-                    addImageToFragment("Chicken", url);
-                    addImageToFragment("Chicken", imageUrl);
-                    addImageToFragment("Chicken", apiHandler.getRecipeByName("test"));
+                    String url = apiHandler.getRecipeByName("");
+                    addImageToFragment("Chicken", url, view);
+                    addImageToFragment("Chicken", imageUrl, view);
+                    addImageToFragment("Chicken", url1, view);
+                    addImageToFragment("Meat", url2, view);
                     isConditionMet[0] = true;
                 }
                 if (!isConditionMet[0]) {
