@@ -19,18 +19,22 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.List;
+
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class HomeFragment extends Fragment {
 
     ApiHandler apiHandler;
-    MainActivity mainActivity;
 
     TextView homeTextView;
     ProgressBar spinner;
     String textHome;
 
     ImageView imageView3;
+
+    Recipe[] loadedRecipes = new Recipe[10];
+
     public HomeFragment(ApiHandler apiHandler) {
         this.apiHandler = apiHandler;
     }
@@ -103,19 +107,29 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
-        for (int i = 0; i < 10; i++){
-            apiHandler.getRecipeByName("", new RecipeCallback() {
-                @Override
-                public void onSuccess(Recipe recipe) {
-                    addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view);
-                }
-                @Override
-                public void onError(Exception error) {
-                    // Hier kannst du Fehlerbehandlung durchführen,
-                    // falls ein Fehler bei der API-Anfrage auftritt.
-                }
-            });
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        List<Recipe> loadedRecipes = mainActivity.getLoadedRecipes();
+
+        if (loadedRecipes.isEmpty()) {
+            for (int i = 0; i < 10; i++){
+                apiHandler.getRecipeByName("", new RecipeCallback() {
+                    @Override
+                    public void onSuccess(Recipe recipe) {
+                        addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view);
+                        mainActivity.addLoadedRecipe(recipe);
+                    }
+                    @Override
+                    public void onError(Exception error) {
+                        // Hier kannst du Fehlerbehandlung durchführen,
+                        // falls ein Fehler bei der API-Anfrage auftritt.
+                    }
+                });
+            }
+        } else {
+            for (Recipe recipe : loadedRecipes) {
+                addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view);
+            }
         }
         return view;
     }

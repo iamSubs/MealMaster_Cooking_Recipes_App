@@ -20,13 +20,18 @@ import com.mealmastercookingrecipesapp.databinding.ActivityMainBinding;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
-    String apiKey = "77e59043d435499d85a39c0915fdd41f";
+    String apiKey = "8901d0f1e4ac4e18b88b126d663d62bd";
+
+    private List<Recipe> loadedRecipes = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    public List<Recipe> getLoadedRecipes() {
+        return loadedRecipes;
+    }
+
+    public void addLoadedRecipe(Recipe recipe){
+        loadedRecipes.add(recipe);
     }
 
     private void replaceFragment(Fragment fragment){
