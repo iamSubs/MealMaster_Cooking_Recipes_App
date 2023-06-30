@@ -1,14 +1,18 @@
 package com.mealmastercookingrecipesapp;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class FavoriteManager {
-    private static final String FAVORITES_FILE = "favorites.txt";
+    private final String FAVORITES_FILE = "favorites.txt";
     private ArrayList<String> favoriteIds;
+    private FileHandler fileHandler;
 
-    public FavoriteManager() {
-        if(FileHandler.FileExists(FAVORITES_FILE)) {
-            favoriteIds = FileHandler.LoadFromFile(FAVORITES_FILE);
+    public FavoriteManager(Context context) {
+        fileHandler = new FileHandler(context);
+        if(fileHandler.FileExists(FAVORITES_FILE)) {
+            favoriteIds = fileHandler.LoadFromFile(FAVORITES_FILE);
         } else {
           favoriteIds = new ArrayList<>();
         }
@@ -16,12 +20,21 @@ public class FavoriteManager {
 
     public void addToFavorites(String id) {
         favoriteIds.add(id);
-        FileHandler.SaveToFile(favoriteIds, FAVORITES_FILE);
+        fileHandler.SaveToFile(favoriteIds, FAVORITES_FILE);
     }
 
     public void removeFromFavorites(String id) {
         favoriteIds.remove(id);
-        FileHandler.SaveToFile(favoriteIds, FAVORITES_FILE);
+        fileHandler.SaveToFile(favoriteIds, FAVORITES_FILE);
+    }
+
+    public ArrayList<String> getFavorites(){
+        if(fileHandler.FileExists(FAVORITES_FILE)) {
+            favoriteIds = fileHandler.LoadFromFile(FAVORITES_FILE);
+        } else {
+            favoriteIds = new ArrayList<>();
+        }
+        return favoriteIds;
     }
 
     public boolean isFavorite(String id) {

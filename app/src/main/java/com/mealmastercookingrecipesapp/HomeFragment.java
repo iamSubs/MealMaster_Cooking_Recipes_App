@@ -103,35 +103,33 @@ public class HomeFragment extends Fragment {
         ImageView iconView = new ImageView(getContext());
         iconView.setImageResource(iconId);
 
-        iconView.setColorFilter(ContextCompat.getColor(getContext(),R.color.grey), PorterDuff.Mode.SRC_IN);
+        if (favoriteManager.isFavorite(id)) {
+            iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.pink), PorterDuff.Mode.SRC_IN);
+        } else {
+            iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.grey), PorterDuff.Mode.SRC_IN);
+        }
 
-        final boolean[] isFavorised = {false};
-        favoriteManager = new FavoriteManager();
+        //final boolean[] isFavorised = {false};
         iconView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
 
                 String imageViewId = (String) finalImageView.getTag();
 
-                if (isFavorised[0]) {
+                if (favoriteManager.isFavorite(imageViewId)) {
                     iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.grey), PorterDuff.Mode.SRC_IN);
                     //zur sicherheit check, ob schon de-favorisiert
-                        //entferne von Arrayliste der favoriten
-                        if (favoriteManager.isFavorite(imageViewId)) {
-                            favoriteManager.removeFromFavorites(imageViewId);
-                            Toast.makeText(getContext(), "Removed ID: " + imageViewId, Toast.LENGTH_SHORT).show();
-                        }
+                        //entferne von Arrayliste der favorite
+                    favoriteManager.removeFromFavorites(imageViewId);
+                    Toast.makeText(getContext(), "Removed ID: " + imageViewId, Toast.LENGTH_SHORT).show();
+
                 } else {
                     iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.pink), PorterDuff.Mode.SRC_IN);
                     //zur sicherheit check, ob schon favorisiert
                         //füge zur ArrayListe der favoriten hinzu
-                    if (!favoriteManager.isFavorite(imageViewId)) {
-                        favoriteManager.addToFavorites(imageViewId);
-                        Toast.makeText(getContext(), "Added ID: " + imageViewId, Toast.LENGTH_SHORT).show();
-                    }
+                    favoriteManager.addToFavorites(imageViewId);
+                    Toast.makeText(getContext(), "Added ID: " + imageViewId, Toast.LENGTH_SHORT).show();
                 }
-
-                isFavorised[0] = !isFavorised[0];
             }
         });
         //Um die größe des Icons einzustellen
@@ -172,6 +170,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        favoriteManager = new FavoriteManager(getContext());
         String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
         for (int i = 0; i < 10; i++){
             apiHandler.getRecipeByName("", new RecipeCallback() {
