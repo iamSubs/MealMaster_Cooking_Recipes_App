@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
-    String apiKey = "77e59043d435499d85a39c0915fdd41f";
+    String apiKey = "2a23994b963346b292d20fbc9dd02e5d";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new FavoriteFragment(apiHandler));
                     break;
             }
-
             return true;
         });
     }
@@ -61,5 +60,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
 
 }
