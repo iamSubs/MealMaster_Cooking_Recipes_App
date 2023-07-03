@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 // View view, Context context, Resources resources, boolean isSearchFragment)
 public class FragmentManager {
-    public static void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, boolean isSearchFragment) {
+    public static void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, String isSearchFragment) {
         // Erstelle einen TextView für den Titel des Bildes
         FavoriteManager favoriteManager = new FavoriteManager(context);
         TextView textView = new TextView(context);
@@ -142,11 +142,14 @@ public class FragmentManager {
         linearLayout.addView(textView);
         linearLayout.addView(frameLayout);
 
-        if (isSearchFragment){
+        if (isSearchFragment == "searchFragment"){
             LinearLayout fragmentLayout = view.findViewById(R.id.searchFragmentLinearLayoutRecipes);
             fragmentLayout.addView(linearLayout);
-        } else {
+        } else if (isSearchFragment == "homeFragment") {
             LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout);
+            fragmentLayout.addView(linearLayout);
+        } else {
+            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout1);
             fragmentLayout.addView(linearLayout);
         }
 

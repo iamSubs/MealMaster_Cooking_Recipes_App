@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
             apiHandler.getRandomRecipe( new RecipeCallback() {
                 @Override
                 public void onSuccess(Recipe recipe) {
-                    FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24, getContext(), getResources(), false);
+                    FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24, getContext(), getResources(), "homeFragment");
                 }
                 @Override
                 public void onError(Exception error) {

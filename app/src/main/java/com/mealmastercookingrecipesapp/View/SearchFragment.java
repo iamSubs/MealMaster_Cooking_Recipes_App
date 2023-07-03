@@ -223,7 +223,7 @@ public class SearchFragment extends Fragment {
                     public void onSuccess(Recipe[] recipes) {
                         // Hier kannst du das Array von Rezepten verwenden
                         for (Recipe recipe : recipes) {
-                            FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24 , getContext(), getResources(), true);
+                            FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24 , getContext(), getResources(), "searchFragment");
                         }
                     }
 
