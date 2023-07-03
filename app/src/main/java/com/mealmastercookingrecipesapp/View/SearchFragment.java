@@ -1,38 +1,34 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.View;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
+import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.Controller.FragmentManager;
+import com.mealmastercookingrecipesapp.R;
+import com.mealmastercookingrecipesapp.Model.Recipe;
+import com.mealmastercookingrecipesapp.Model.RecipeCallbackArray;
 
 import java.util.ArrayList;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 public class SearchFragment extends Fragment {
@@ -227,7 +223,7 @@ public class SearchFragment extends Fragment {
                     public void onSuccess(Recipe[] recipes) {
                         // Hier kannst du das Array von Rezepten verwenden
                         for (Recipe recipe : recipes) {
-                            FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, getContext(), getResources(), true);
+                            FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24 , getContext(), getResources(), true);
                         }
                     }
 

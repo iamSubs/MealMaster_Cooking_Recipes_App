@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.View;
 
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
-import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,30 +14,68 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.Controller.FavoriteManager;
+import com.mealmastercookingrecipesapp.R;
+import com.mealmastercookingrecipesapp.Model.Recipe;
+import com.mealmastercookingrecipesapp.Model.RecipeCallback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+
+import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-public class HomeFragment extends Fragment {
-
+public class FavoriteFragment extends Fragment {
     ApiHandler apiHandler;
-    MainActivity mainActivity;
-
     FavoriteManager favoriteManager;
 
-    TextView homeTextView;
-    ProgressBar spinner;
-    String textHome;
-
-    ImageView imageView3;
-    public HomeFragment(ApiHandler apiHandler) {
+    public FavoriteFragment(ApiHandler apiHandler) {
         this.apiHandler = apiHandler;
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+        favoriteManager = new FavoriteManager(getContext());
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        LinearLayout container = (LinearLayout) getView().findViewById(R.id.fragment_layout);
+        if (container != null) {
+            container.removeAllViews();
+        } else {
+            return;
+        }
+
+        // Get the updated favorites list
+        ArrayList<String> favoritesList = favoriteManager.getFavorites();
+
+        // Add each favorite to the Fragment
+        for (String id : favoritesList) {
+            apiHandler.getRecipeById(id, new RecipeCallback() {
+                @Override
+                public void onSuccess(Recipe recipe) {
+                    addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), getView(), R.drawable.baseline_favorite_24);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    // Handle error
+                }
+            });
+        }
+    }
+
 
     public void addImageToFragment(String title, String imageUrl, String id, View view, int iconId) {
         // Erstelle einen TextView für den Titel des Bildes
@@ -119,14 +155,14 @@ public class HomeFragment extends Fragment {
                 if (favoriteManager.isFavorite(imageViewId)) {
                     iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.grey), PorterDuff.Mode.SRC_IN);
                     //zur sicherheit check, ob schon de-favorisiert
-                        //entferne von Arrayliste der favorite
+                    //entferne von Arrayliste der favorite
                     favoriteManager.removeFromFavorites(imageViewId);
                     Toast.makeText(getContext(), "Removed ID: " + imageViewId, Toast.LENGTH_SHORT).show();
 
                 } else {
                     iconView.setColorFilter(ContextCompat.getColor(getContext(), R.color.pink), PorterDuff.Mode.SRC_IN);
                     //zur sicherheit check, ob schon favorisiert
-                        //füge zur ArrayListe der favoriten hinzu
+                    //füge zur ArrayListe der favoriten hinzu
                     favoriteManager.addToFavorites(imageViewId);
                     Toast.makeText(getContext(), "Added ID: " + imageViewId, Toast.LENGTH_SHORT).show();
                 }
@@ -167,24 +203,4 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        favoriteManager = new FavoriteManager(getContext());
-        String imageUrl = "https://spoonacular.com/recipeImages/715497-312x231.jpg";
-        for (int i = 0; i < 10; i++){
-            apiHandler.getRandomRecipe( new RecipeCallback() {
-                @Override
-                public void onSuccess(Recipe recipe) {
-                    addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24);
-                }
-                @Override
-                public void onError(Exception error) {
-                    // Hier kannst du Fehlerbehandlung durchführen,
-                    // falls ein Fehler bei der API-Anfrage auftritt.
-                }
-            });
-        }
-        return view;
-    }
 }

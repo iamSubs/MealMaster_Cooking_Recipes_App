@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.Controller;
 
 import android.content.Context;
 
@@ -10,6 +10,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mealmastercookingrecipesapp.Model.Recipe;
+import com.mealmastercookingrecipesapp.Model.RecipeCallback;
+import com.mealmastercookingrecipesapp.Model.RecipeCallbackArray;
 
 import org.json.JSONObject;
 
