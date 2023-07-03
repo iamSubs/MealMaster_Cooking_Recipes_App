@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.Model;
 
 import java.io.Serializable;
 

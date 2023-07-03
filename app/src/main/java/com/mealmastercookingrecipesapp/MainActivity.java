@@ -6,22 +6,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.View.FavoriteFragment;
+import com.mealmastercookingrecipesapp.View.HomeFragment;
+import com.mealmastercookingrecipesapp.View.MenuFragment;
+import com.mealmastercookingrecipesapp.View.SearchFragment;
 import com.mealmastercookingrecipesapp.databinding.ActivityMainBinding;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
     String apiKey = "8901d0f1e4ac4e18b88b126d663d62bd";
-
-    private List<Recipe> loadedRecipes = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-    }
-
-    public List<Recipe> getLoadedRecipes() {
-        return loadedRecipes;
-    }
-
-    public void addLoadedRecipe(Recipe recipe){
-        loadedRecipes.add(recipe);
     }
 
     private void replaceFragment(Fragment fragment){
