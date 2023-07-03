@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="image_margin">26dp</dimen>
+    <dimen name="icon_size">32dp</dimen>
+    <dimen name="icon_margin">16dp</dimen>
+    <dimen name="icon_margin_right">32dp</dimen>
 </resources>

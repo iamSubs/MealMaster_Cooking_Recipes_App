@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new FavoriteFragment(apiHandler));
                     break;
             }
+
             return true;
         });
     }
@@ -60,6 +61,5 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
-
 
 }
