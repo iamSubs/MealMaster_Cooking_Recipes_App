@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.Controller;
 
 import android.content.Context;
 

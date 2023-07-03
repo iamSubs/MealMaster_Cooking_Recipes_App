@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.View;
 
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -17,6 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.Controller.FavoriteManager;
+import com.mealmastercookingrecipesapp.R;
+import com.mealmastercookingrecipesapp.Model.Recipe;
+import com.mealmastercookingrecipesapp.Model.RecipeCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -9,4 +9,5 @@
     <color name="grey">#8E8E8E</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#FF4081</color>
+    <color name="underLine">#D8D6D6</color>
 </resources>
