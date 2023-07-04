@@ -35,7 +35,7 @@ public class FragmentController {
     }
 
     public void openRecipeFragment(Recipe recipe) {
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), recipe.getSummary(), recipe.getServings(), recipe.getReadyInMinutes(), recipe.getIngredients());
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), recipe.getSummary(), recipe.getServings(), recipe.getReadyInMinutes(), recipe.getIngredients(), recipe.getInstruction());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, recipeFragment);
@@ -179,6 +179,9 @@ public class FragmentController {
             LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_fav);
             fragmentLayout.addView(linearLayout);
         } else if (whichFragment == "home") {
+            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
+            fragmentLayout.addView(linearLayout);
+        } else if (whichFragment == "search"){
             LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
             fragmentLayout.addView(linearLayout);
         } else {

@@ -77,6 +77,10 @@ public class SearchFragment extends Fragment {
         TextView addIngredientTextView = view.findViewById(R.id.AddIngredientTextView);
         ArrayList<String> ingredientList = new ArrayList<>();
 
+        LinearLayout searchBarLayout = view.findViewById(R.id.searchBarLayout);
+        LinearLayout settingsLayout = view.findViewById(R.id.settingsLayout);
+        LinearLayout switchesLayout = view.findViewById(R.id.switchesLayout);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, suggestions);
         autoCompleteTextView.setAdapter(adapter);
 
@@ -134,7 +138,7 @@ public class SearchFragment extends Fragment {
                         newTextView.setText(inputText);
 
                         // Füge das TextView zum Fragment-Layout hinzu
-                        LinearLayout linearLayout = getView().findViewById(R.id.SearchFragmentLinearLayout);
+                        LinearLayout linearLayout = getView().findViewById(R.id.settingsLayout);
                         linearLayout.addView(newTextView);
                         ingredientList.add(inputText);
                     }
@@ -188,6 +192,10 @@ public class SearchFragment extends Fragment {
         searchImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                settingsLayout.setVisibility(View.GONE);
+                searchBarLayout.setVisibility(View.GONE);
+                switchesLayout.setVisibility(View.GONE);
+
 
                 String search = "query=" + autoCompleteTextView.getText();
 

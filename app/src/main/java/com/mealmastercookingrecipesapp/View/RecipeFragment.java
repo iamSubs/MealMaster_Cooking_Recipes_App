@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Html;
 import android.text.Spanned;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.android.material.tabs.TabLayout;
 import com.mealmastercookingrecipesapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +36,7 @@ public class RecipeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RecipeFragment newInstance(String title, String imageUrl, String id, String summary, int servings, int readyInMinutes, String[] ingredients ) {
+    public static RecipeFragment newInstance(String title, String imageUrl, String id, String summary, int servings, int readyInMinutes, String[] ingredients , String instruction) {
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -44,10 +46,10 @@ public class RecipeFragment extends Fragment {
         args.putString("servings", Integer.toString(servings));
         args.putString("readyInMinutes", Integer.toString(readyInMinutes));
         args.putStringArray("ingredients", ingredients);
+        args.putString("instruction", instruction);
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,9 +60,50 @@ public class RecipeFragment extends Fragment {
         TextView servingsTextView = view.findViewById(R.id.servingsTextView);
         TextView ingredientsTextView = view.findViewById(R.id.ingredientsTextView);
         TextView readyInMinutesTextView = view.findViewById(R.id.readyInMinutesTextView);
+        TextView instructionTextView = view.findViewById(R.id.instructionTextView);
         ImageView imageView = view.findViewById(R.id.imageViewTESTER);
 
 
+        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+        LinearLayout overviewLayout = view.findViewById(R.id.overviewLayout);
+        LinearLayout descriptionLayout = view.findViewById(R.id.descriptionLayout);
+        LinearLayout ingredientsLayout = view.findViewById(R.id.ingredientsLayout);
+        LinearLayout instructionLayout = view.findViewById(R.id.instructionLayout);
+        ingredientsLayout.setVisibility(View.GONE);
+        instructionLayout.setVisibility(view.GONE);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String tabName = tab.getText().toString();
+                if (tabName.equals("Ingredients")){
+                    ingredientsLayout.setVisibility(View.VISIBLE);
+                    descriptionLayout.setVisibility(View.GONE);
+                    overviewLayout.setVisibility(View.GONE);
+                    instructionLayout.setVisibility(view.GONE);
+                } else if (tabName.equals("Overview")){
+                    descriptionLayout.setVisibility(View.VISIBLE);
+                    ingredientsLayout.setVisibility(View.GONE);
+                    overviewLayout.setVisibility(View.VISIBLE);
+                    instructionLayout.setVisibility(view.GONE);
+                } else if (tabName.equals("Instruction")){
+                    instructionLayout.setVisibility(view.VISIBLE);
+                    descriptionLayout.setVisibility(View.GONE);
+                    ingredientsLayout.setVisibility(View.GONE);
+                    overviewLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Not needed for this example
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Not needed for this example
+            }
+        });
 
         Bundle args = getArguments();
         if (args != null) {
@@ -71,16 +114,19 @@ public class RecipeFragment extends Fragment {
             String servings = args.getString("servings");
             String readyInMinutes = args.getString("readyInMinutes");
             String[] ingredients = args.getStringArray("ingredients");
+            String instruction = args.getString("instruction");
 
             // Setze den Titel
             titleTextView.setText(title);
             Spanned spannedText = Html.fromHtml(summary, Html.FROM_HTML_MODE_LEGACY);
+            Spanned spannedTextInstruction = Html.fromHtml(instruction, Html.FROM_HTML_MODE_LEGACY);
+            instructionTextView.setText(spannedTextInstruction);
             summaryTextView.setText(spannedText);
             servingsTextView.setText("Servings: " + servings);
             readyInMinutesTextView.setText("Ready in: " + readyInMinutes + "min");
 
             for (String s : ingredients){
-                ingredientsTextView.setText(ingredientsTextView.getText() + s + "\n");
+                ingredientsTextView.setText(ingredientsTextView.getText() + "- " + s + "\n");
             }
 
             //Erstelle final copy of ImageView
