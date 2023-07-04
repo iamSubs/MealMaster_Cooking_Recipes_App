@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mealmastercookingrecipesapp.Controller.ApiHandler;
-import com.mealmastercookingrecipesapp.Controller.FragmentManager;
+import com.mealmastercookingrecipesapp.Controller.FragmentController;
 import com.mealmastercookingrecipesapp.R;
 import com.mealmastercookingrecipesapp.Model.Recipe;
 import com.mealmastercookingrecipesapp.Model.RecipeCallbackArray;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment {
 
     ApiHandler apiHandler;
+    FragmentController fragmentController;
 
     private String[] suggestions = {
             "Pizza", "Pasta", "Salad", "Soup", "Smoothie", "Burger", "Cake", "Tacos", "Sushi", "Curry",
@@ -56,8 +58,9 @@ public class SearchFragment extends Fragment {
     };
 
 
-    public SearchFragment(ApiHandler apiHandler) {
+    public SearchFragment(ApiHandler apiHandler, FragmentManager fragmentManager) {
         this.apiHandler = apiHandler;
+        this.fragmentController = new FragmentController(fragmentManager, apiHandler);
     }
 
     @Override
@@ -223,7 +226,7 @@ public class SearchFragment extends Fragment {
                     public void onSuccess(Recipe[] recipes) {
                         // Hier kannst du das Array von Rezepten verwenden
                         for (Recipe recipe : recipes) {
-                            FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24 , getContext(), getResources(), true);
+                            fragmentController.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24 , getContext(), getResources(), "search");
                         }
                     }
 
