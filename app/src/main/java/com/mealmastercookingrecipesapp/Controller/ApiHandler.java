@@ -57,7 +57,7 @@ public class ApiHandler {
                                 String imagelink = recipeNode.get("image").asText();
                                 String instructions = recipeNode.get("instructions").asText();
                                 String readyInMinutes = recipeNode.get("readyInMinutes").asText();
-                                recipe = new Recipe(id, title, imagelink, instructions, Integer.parseInt(readyInMinutes));
+                                recipe = new Recipe(id, title, imagelink, instructions, Integer.parseInt(readyInMinutes), 0, "", false, false, false);
                             }
                         } else {
                             System.out.println("Das JSON-Objekt enthält keine 'recipes'-Eigenschaft oder diese ist kein Array.");
@@ -103,7 +103,7 @@ public class ApiHandler {
                                 String title = recipeNode.get("title").asText();
                                 String id = recipeNode.get("id").asText();
                                 String imagelink = recipeNode.get("image").asText();
-                                Recipe recipe = new Recipe(id, title, imagelink, "", 1);
+                                Recipe recipe = new Recipe(id, title, imagelink, "", 1, 0, "", false, false, false);
                                 recipeList.add(recipe);
                             }
                             // Rückruf aufrufen und das Ergebnis übergeben
@@ -133,8 +133,7 @@ public class ApiHandler {
     }
 
     public void getRecipeById(String id, final RecipeCallback callback){
-        String apiKey = "90910a4b8b1745c9804f372de4c007e4";
-        String specificUrl = "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=" + apiKey;
+        String specificUrl = "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=" + key;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, specificUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -149,7 +148,12 @@ public class ApiHandler {
                         String imageUrl = jsonNode.get("image").asText();
                         String instructions = jsonNode.get("instructions").asText();
                         String readyInMinutes = jsonNode.get("readyInMinutes").asText();
-                        recipe = new Recipe(id, title, imageUrl, instructions, Integer.parseInt(readyInMinutes));
+                        String servings = jsonNode.get("servings").asText();
+                        String summary = jsonNode.get("summary").asText();
+                        String vegetarian = jsonNode.get("vegetarian").asText();
+                        String vegan = jsonNode.get("vegan").asText();
+                        String glutenFree = jsonNode.get("glutenFree").asText();
+                        recipe = new Recipe(id, title, imageUrl, instructions, Integer.parseInt(readyInMinutes), Integer.parseInt(servings), summary, Boolean.parseBoolean(vegetarian), Boolean.parseBoolean(vegan), Boolean.parseBoolean(glutenFree));
                         // Call the callback and pass the result
                         callback.onSuccess(recipe);
                     } catch (Exception e) {
@@ -172,6 +176,7 @@ public class ApiHandler {
         });
         requestQueue.add(request);
     }
+
 
 
 }

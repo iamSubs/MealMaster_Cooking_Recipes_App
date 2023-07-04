@@ -3,6 +3,7 @@ package com.mealmastercookingrecipesapp.View;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.mealmastercookingrecipesapp.Controller.ApiHandler;
 import com.mealmastercookingrecipesapp.Controller.FavoriteManager;
-import com.mealmastercookingrecipesapp.Controller.FragmentManager;
+import com.mealmastercookingrecipesapp.Controller.FragmentController;
 import com.mealmastercookingrecipesapp.MainActivity;
 import com.mealmastercookingrecipesapp.R;
 import com.mealmastercookingrecipesapp.Model.Recipe;
@@ -29,11 +30,14 @@ public class HomeFragment extends Fragment {
     TextView homeTextView;
     ProgressBar spinner;
     String textHome;
+    FragmentController fragmentController;
 
     ImageView imageView3;
-    public HomeFragment(ApiHandler apiHandler) {
+    public HomeFragment(ApiHandler apiHandler, FragmentManager fragmentManager) {
         this.apiHandler = apiHandler;
+        fragmentController = new FragmentController(fragmentManager, apiHandler);
     }
+
 
 
 
@@ -46,7 +50,7 @@ public class HomeFragment extends Fragment {
             apiHandler.getRandomRecipe( new RecipeCallback() {
                 @Override
                 public void onSuccess(Recipe recipe) {
-                    FragmentManager.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24, getContext(), getResources(), false);
+                    fragmentController.addImageToFragment(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), view, R.drawable.baseline_favorite_24, getContext(), getResources(), "home");
                 }
                 @Override
                 public void onError(Exception error) {

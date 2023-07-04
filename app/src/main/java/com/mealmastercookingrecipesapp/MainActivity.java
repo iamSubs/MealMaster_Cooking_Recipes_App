@@ -20,28 +20,29 @@ public class MainActivity extends AppCompatActivity {
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
-    String apiKey = "8901d0f1e4ac4e18b88b126d663d62bd";
+    String apiKey = "be9540276e2c4f4ba693f0a4c97ddfcb";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         apiHandler = new ApiHandler(this, url, apiKey);
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment(apiHandler));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        replaceFragment(new HomeFragment(apiHandler,fragmentManager));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
-                    replaceFragment(new HomeFragment(apiHandler));
+                    replaceFragment(new HomeFragment(apiHandler, fragmentManager));
                     break;
                 case R.id.menu:
                     replaceFragment(new MenuFragment(apiHandler));
                     break;
                 case R.id.search:
-                    replaceFragment(new SearchFragment(apiHandler));
+                    replaceFragment(new SearchFragment(apiHandler, fragmentManager));
                     break;
                 case R.id.favorite:
-                    replaceFragment(new FavoriteFragment(apiHandler));
+                    replaceFragment(new FavoriteFragment(apiHandler, fragmentManager));
                     break;
             }
 

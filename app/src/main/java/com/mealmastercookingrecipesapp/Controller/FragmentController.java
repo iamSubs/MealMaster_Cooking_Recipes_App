@@ -13,15 +13,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.mealmastercookingrecipesapp.Controller.FavoriteManager;
+import com.mealmastercookingrecipesapp.Model.Recipe;
+import com.mealmastercookingrecipesapp.Model.RecipeCallback;
 import com.mealmastercookingrecipesapp.R;
+import com.mealmastercookingrecipesapp.View.RecipeFragment;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
-// View view, Context context, Resources resources, boolean isSearchFragment)
-public class FragmentManager {
-    public static void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, boolean isSearchFragment) {
+
+public class FragmentController {
+
+    public FragmentManager fragmentManager;
+    public ApiHandler apiHandler;
+    public FragmentController(FragmentManager fragmentManager, ApiHandler apiHandler) {
+        this.fragmentManager = fragmentManager;
+        this.apiHandler = apiHandler;
+    }
+
+    public void openRecipeFragment(Recipe recipe) {
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), recipe.getSummary(), recipe.getServings(), recipe.getReadyInMinutes());
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout, recipeFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+    public void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, String whichFragment) {
         // Erstelle einen TextView für den Titel des Bildes
         FavoriteManager favoriteManager = new FavoriteManager(context);
         TextView textView = new TextView(context);
@@ -41,7 +61,7 @@ public class FragmentManager {
                 .load(imageUrl)
                 .resize(targetWidth, targetHeight)
                 .centerInside()
-                .transform(new RoundedCornersTransformation(120, 0))
+                .transform(new RoundedCornersTransformation(60, 0))
                 .into(imageView);
         // Konfiguriere die Layout-Parameter für das ImageView im LinearLayout
         LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
@@ -49,7 +69,7 @@ public class FragmentManager {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         int margin = resources.getDimensionPixelSize(R.dimen.image_margin);
-        imageLayoutParams.setMargins(margin, margin/4, margin, margin/4);
+        imageLayoutParams.setMargins(margin, margin/4, margin, margin/2);
 
         // Setze die Skalierungsart des Bildes auf "fitXY", um es an die ImageView-Größe anzupassen
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -65,6 +85,18 @@ public class FragmentManager {
                 String clickedId = (String) v.getTag();
                 // Zeige die ID an (hier wird einfach eine Toast-Nachricht angezeigt)
                 Toast.makeText(context, "Clicked ID: " + clickedId, Toast.LENGTH_SHORT).show();
+                apiHandler.getRecipeById(id, new RecipeCallback() {
+                    @Override
+                    public void onSuccess(Recipe recipe) {
+                        openRecipeFragment(recipe);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        // Handle error
+                    }
+                });
+
             }
         });
 
@@ -142,14 +174,19 @@ public class FragmentManager {
         linearLayout.addView(textView);
         linearLayout.addView(frameLayout);
 
-        if (isSearchFragment){
-            LinearLayout fragmentLayout = view.findViewById(R.id.searchFragmentLinearLayoutRecipes);
+        if (whichFragment == "fav"){
+            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_fav);
+            fragmentLayout.addView(linearLayout);
+        } else if (whichFragment == "home") {
+            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
             fragmentLayout.addView(linearLayout);
         } else {
-            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout);
+            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
             fragmentLayout.addView(linearLayout);
         }
 
-
     }
+
+
+
 }
