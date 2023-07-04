@@ -1,4 +1,4 @@
-package com.mealmastercookingrecipesapp;
+package com.mealmastercookingrecipesapp.Main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.R;
 import com.mealmastercookingrecipesapp.View.FavoriteFragment;
 import com.mealmastercookingrecipesapp.View.HomeFragment;
 import com.mealmastercookingrecipesapp.View.MenuFragment;
@@ -20,28 +21,29 @@ public class MainActivity extends AppCompatActivity {
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
-    String apiKey = "be9540276e2c4f4ba693f0a4c97ddfcb";
+    String apiKey = "c53222da84d74352b9d096c2d64225d1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         apiHandler = new ApiHandler(this, url, apiKey);
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment(apiHandler));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        replaceFragment(new HomeFragment(apiHandler, fragmentManager));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
-                    replaceFragment(new HomeFragment(apiHandler));
+                    replaceFragment(new HomeFragment(apiHandler, fragmentManager));
                     break;
                 case R.id.menu:
-                    replaceFragment(new MenuFragment(apiHandler));
+                    replaceFragment(new MenuFragment(apiHandler, fragmentManager));
                     break;
                 case R.id.search:
-                    replaceFragment(new SearchFragment(apiHandler));
+                    replaceFragment(new SearchFragment(apiHandler, fragmentManager));
                     break;
                 case R.id.favorite:
-                    replaceFragment(new FavoriteFragment(apiHandler));
+                    replaceFragment(new FavoriteFragment(apiHandler, fragmentManager));
                     break;
             }
 

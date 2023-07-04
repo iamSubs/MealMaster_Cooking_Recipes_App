@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.mealmastercookingrecipesapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +34,7 @@ public class RecipeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RecipeFragment newInstance(String title, String imageUrl, String id, String summary, int servings, int readyInMinutes) {
+    public static RecipeFragment newInstance(String title, String imageUrl, String id, String summary, int servings, int readyInMinutes, String[] ingredients ) {
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -42,6 +43,7 @@ public class RecipeFragment extends Fragment {
         args.putString("summary", summary);
         args.putString("servings", Integer.toString(servings));
         args.putString("readyInMinutes", Integer.toString(readyInMinutes));
+        args.putStringArray("ingredients", ingredients);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,11 +53,13 @@ public class RecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        TextView titleTextView = view.findViewById(R.id.titleTextView);
+        TextView titleTextView = view.findViewById(R.id.recipeTitleTextView);
         TextView summaryTextView = view.findViewById(R.id.summaryTextView);
         TextView servingsTextView = view.findViewById(R.id.servingsTextView);
+        TextView ingredientsTextView = view.findViewById(R.id.ingredientsTextView);
         TextView readyInMinutesTextView = view.findViewById(R.id.readyInMinutesTextView);
         ImageView imageView = view.findViewById(R.id.imageViewTESTER);
+
 
 
         Bundle args = getArguments();
@@ -66,13 +70,18 @@ public class RecipeFragment extends Fragment {
             String summary = args.getString("summary");
             String servings = args.getString("servings");
             String readyInMinutes = args.getString("readyInMinutes");
+            String[] ingredients = args.getStringArray("ingredients");
 
             // Setze den Titel
             titleTextView.setText(title);
             Spanned spannedText = Html.fromHtml(summary, Html.FROM_HTML_MODE_LEGACY);
             summaryTextView.setText(spannedText);
-            servingsTextView.setText(servings);
-            readyInMinutesTextView.setText(readyInMinutes + "min");
+            servingsTextView.setText("Servings: " + servings);
+            readyInMinutesTextView.setText("Ready in: " + readyInMinutes + "min");
+
+            for (String s : ingredients){
+                ingredientsTextView.setText(ingredientsTextView.getText() + s + "\n");
+            }
 
             //Erstelle final copy of ImageView
             final ImageView finalImageView = imageView;

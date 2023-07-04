@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mealmastercookingrecipesapp.Model.Recipe;
 import com.mealmastercookingrecipesapp.Model.RecipeCallback;
@@ -22,8 +24,6 @@ import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 // View view, Context context, Resources resources, boolean isSearchFragment)
-public class FragmentManager {
-    public static void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, String isSearchFragment) {
 
 public class FragmentController {
 
@@ -35,7 +35,7 @@ public class FragmentController {
     }
 
     public void openRecipeFragment(Recipe recipe) {
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), recipe.getSummary(), recipe.getServings(), recipe.getReadyInMinutes());
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getTitle(), recipe.getImageUrl(), recipe.getId(), recipe.getSummary(), recipe.getServings(), recipe.getReadyInMinutes(), recipe.getIngredients());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, recipeFragment);
@@ -182,7 +182,7 @@ public class FragmentController {
             LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
             fragmentLayout.addView(linearLayout);
         } else {
-            LinearLayout fragmentLayout = view.findViewById(R.id.fragment_layout_home);
+            LinearLayout fragmentLayout = view.findViewById(R.id.linear_Cate);
             fragmentLayout.addView(linearLayout);
         }
 

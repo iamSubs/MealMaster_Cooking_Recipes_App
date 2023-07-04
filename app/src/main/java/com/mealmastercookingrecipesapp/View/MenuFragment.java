@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mealmastercookingrecipesapp.Controller.ApiHandler;
+import com.mealmastercookingrecipesapp.Controller.FragmentController;
 import com.mealmastercookingrecipesapp.R;
 
 public class MenuFragment extends Fragment {
@@ -40,9 +41,11 @@ public class MenuFragment extends Fragment {
     private ImageView imageView8;
     private ImageView imageView9;
     private ImageView imageView10;
+    FragmentController fragmentController;
 
-    public MenuFragment(ApiHandler apiHandler) {
+    public MenuFragment(ApiHandler apiHandler, FragmentManager fragmentManager) {
         this.apiHandler = apiHandler;
+        fragmentController = new FragmentController(fragmentManager, apiHandler);
     }
 
 
@@ -93,7 +96,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 1 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=chicken");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=chicken", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -107,7 +110,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 2 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=pork");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=pork", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -121,7 +124,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 3 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=salad");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=salad", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -135,7 +138,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 4 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Vegetarian");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Vegetarian", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -149,7 +152,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 5 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Vegan");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Vegan", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -163,7 +166,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 6 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Soups");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Soups", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -177,7 +180,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 7 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Breakfast");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Breakfast", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -191,7 +194,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 8 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Breads");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Breads", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -205,7 +208,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 9 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Dessert");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Dessert", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);
@@ -219,7 +222,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Image Click", "Image 10 clicked");
                 hideAllImages();
-                Fragment newFragment = new NewFragment(apiHandler, "query=Snack");
+                Fragment newFragment = new CategorieSerachFragment(apiHandler, "query=Snack", fragmentController);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame, newFragment);

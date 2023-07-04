@@ -14,6 +14,8 @@ import com.mealmastercookingrecipesapp.Model.Recipe;
 import com.mealmastercookingrecipesapp.Model.RecipeCallback;
 import com.mealmastercookingrecipesapp.Model.RecipeCallbackArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -132,6 +134,20 @@ public class ApiHandler {
         requestQueue.add(request);
     }
 
+    private String[] ingredientExtractor(JSONArray jsonArray) {
+        String[] ingredients = new String[jsonArray.length()];
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject ingredientObject = jsonArray.getJSONObject(i);
+                String ingredientName = ingredientObject.getString("original");
+                ingredients[i] = ingredientName;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ingredients;
+    }
+
     public void getRecipeById(String id, final RecipeCallback callback){
         String specificUrl = "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=" + key;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, specificUrl, null, new Response.Listener<JSONObject>() {
@@ -143,6 +159,12 @@ public class ApiHandler {
                     try {
                         ObjectMapper objectMapper = new ObjectMapper();
                         JsonNode jsonNode = objectMapper.readTree(result);
+
+                        // Extract ingredients using the extractIngredients function
+                        String ingredientsJson = jsonNode.get("extendedIngredients").toString();
+                        JSONArray ingredientsArray = new JSONArray(ingredientsJson);
+                        String[] ingredients = ingredientExtractor(ingredientsArray);
+
                         // Directly extract recipe information since it's not in an array
                         String title = jsonNode.get("title").asText();
                         String imageUrl = jsonNode.get("image").asText();
@@ -153,8 +175,10 @@ public class ApiHandler {
                         String vegetarian = jsonNode.get("vegetarian").asText();
                         String vegan = jsonNode.get("vegan").asText();
                         String glutenFree = jsonNode.get("glutenFree").asText();
+
                         recipe = new Recipe(id, title, imageUrl, instructions, Integer.parseInt(readyInMinutes), Integer.parseInt(servings), summary, Boolean.parseBoolean(vegetarian), Boolean.parseBoolean(vegan), Boolean.parseBoolean(glutenFree));
                         // Call the callback and pass the result
+                        recipe.setIngredients(ingredients);
                         callback.onSuccess(recipe);
                     } catch (Exception e) {
                         e.printStackTrace();

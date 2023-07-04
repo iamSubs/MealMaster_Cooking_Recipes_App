@@ -16,6 +16,8 @@ public class Recipe {
     boolean vegan;
     boolean glutenFree;
 
+    private String[] ingredients;
+
 
     public Recipe(String id, String title, String imageUrl, String instruction, int readyInMinutes, int servings, String summary, boolean vegetarian, boolean vegan, boolean glutenFree) {
         this.id = id;
@@ -56,6 +58,14 @@ public class Recipe {
 
     public int getServings(){
         return servings;
+    }
+
+    public String[] getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String[] ingredients) {
+        this.ingredients = ingredients;
     }
 
 }
