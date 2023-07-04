@@ -13,8 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.mealmastercookingrecipesapp.Model.Recipe;
 import com.mealmastercookingrecipesapp.Model.RecipeCallback;
@@ -23,6 +21,9 @@ import com.mealmastercookingrecipesapp.View.RecipeFragment;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+// View view, Context context, Resources resources, boolean isSearchFragment)
+public class FragmentManager {
+    public static void addImageToFragment(String title, String imageUrl, String id, View view, int iconId, Context context, Resources resources, String isSearchFragment) {
 
 public class FragmentController {
 
@@ -185,8 +186,6 @@ public class FragmentController {
             fragmentLayout.addView(linearLayout);
         }
 
+
     }
-
-
-
 }

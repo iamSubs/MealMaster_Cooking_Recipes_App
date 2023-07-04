@@ -1,5 +1,7 @@
 package com.mealmastercookingrecipesapp.Model;
 
+import java.io.Serializable;
+
 public class Recipe {
 
     String id;

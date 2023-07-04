@@ -27,22 +27,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         apiHandler = new ApiHandler(this, url, apiKey);
         setContentView(binding.getRoot());
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        replaceFragment(new HomeFragment(apiHandler,fragmentManager));
+        replaceFragment(new HomeFragment(apiHandler));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
-                    replaceFragment(new HomeFragment(apiHandler, fragmentManager));
+                    replaceFragment(new HomeFragment(apiHandler));
                     break;
                 case R.id.menu:
                     replaceFragment(new MenuFragment(apiHandler));
                     break;
                 case R.id.search:
-                    replaceFragment(new SearchFragment(apiHandler, fragmentManager));
+                    replaceFragment(new SearchFragment(apiHandler));
                     break;
                 case R.id.favorite:
-                    replaceFragment(new FavoriteFragment(apiHandler, fragmentManager));
+                    replaceFragment(new FavoriteFragment(apiHandler));
                     break;
             }
 
