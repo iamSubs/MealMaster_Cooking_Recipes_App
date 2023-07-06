@@ -4,4 +4,5 @@
     <dimen name="icon_size">32dp</dimen>
     <dimen name="icon_margin">16dp</dimen>
     <dimen name="icon_margin_right">40dp</dimen>
+    <dimen name="icon_padding">10dp</dimen>
 </resources>

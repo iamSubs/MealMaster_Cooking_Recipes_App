@@ -119,10 +119,17 @@ public class FragmentController {
         if (favoriteManager.isFavorite(id)) {
             iconView.setColorFilter(ContextCompat.getColor(context, R.color.pink), PorterDuff.Mode.SRC_IN);
         } else {
-            iconView.setColorFilter(ContextCompat.getColor(context, R.color.grey), PorterDuff.Mode.SRC_IN);
+            iconView.setColorFilter(ContextCompat.getColor(context, R.color.bright_grey), PorterDuff.Mode.SRC_IN);
         }
 
-        //final boolean[] isFavorised = {false};
+        //fügt eine form hinzu, um es wie ein schatten wirken zu lassen
+        iconView.setBackgroundResource(R.drawable.icon_background);
+
+        // fügt padding zum iconView ein
+        int paddingSize = resources.getDimensionPixelSize(R.dimen.icon_padding) * 2;
+        iconView.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
+
+
         iconView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -130,7 +137,7 @@ public class FragmentController {
                 String imageViewId = (String) finalImageView.getTag();
 
                 if (favoriteManager.isFavorite(imageViewId)) {
-                    iconView.setColorFilter(ContextCompat.getColor(context, R.color.grey), PorterDuff.Mode.SRC_IN);
+                    iconView.setColorFilter(ContextCompat.getColor(context, R.color.bright_grey), PorterDuff.Mode.SRC_IN);
                     //zur sicherheit check, ob schon de-favorisiert
                     //entferne von Arrayliste der favorite
                     favoriteManager.removeFromFavorites(imageViewId);
@@ -150,8 +157,8 @@ public class FragmentController {
 
         // Konfiguriere die Layout-Parameter für den IconView
         FrameLayout.LayoutParams iconLayoutParams = new FrameLayout.LayoutParams(
-                iconSize,
-                iconSize
+                iconSize + 2 * paddingSize,
+                iconSize + 2 * paddingSize
         );
 
         //Positioniere den Icon oben rechts von ImageView
@@ -165,6 +172,8 @@ public class FragmentController {
         iconView.setLayoutParams(iconLayoutParams);
 
         FrameLayout frameLayout = new FrameLayout(context);
+
+
 
         //Füge das Imageview und IconView zum FrameLayout hinzu um sie übereinander zu rendern
         frameLayout.addView(imageView, imageLayoutParams);

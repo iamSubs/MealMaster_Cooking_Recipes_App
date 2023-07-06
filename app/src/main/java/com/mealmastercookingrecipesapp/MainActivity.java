@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     ApiHandler apiHandler;
     String url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=";
 
-    String apiKey = "be9540276e2c4f4ba693f0a4c97ddfcb";
+    String apiKey = "2c68e2534e33411e8a4312e82c435722";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
